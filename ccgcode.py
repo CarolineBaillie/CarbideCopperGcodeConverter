@@ -5,22 +5,20 @@ tools = ['Contour','Drilling','Rubout','Routing']
 # copies contents of Carbide Copper excluding tool change codes, into
 # a gcode file 
 def deleteToolchange():
-	exclude = "M06"
-	ex = "G01F200"
-
 	with open('copper.nc') as filein, open('gcode.txt', 'w') as fileout:
 		for line in filein:
-			if ex in line:
+			# put string values in here rather than store in variable to save memory
+			if "G01F200" in line:
 				fileout.write(line[7:])
-			elif exclude not in line:
+			elif "M06" not in line:
 				fileout.write(line)
 
 # copies initial state gcode into separate file for each toolpath
 def copyStates(gcode,splitGcode):
-	limit = "(  )"
 	with open(gcode) as filein, open(splitGcode,'w') as fileout:
 		for line in filein:
-			if limit not in line:
+			# same as above with string
+			if "(  )" not in line:
 				fileout.write(line)
 			else:
 				break
